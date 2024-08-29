@@ -220,9 +220,9 @@ function resumeGame() {
             letterProgress = progress.letterProgress;
             updateProgressBar();
             updateLetterBreakdown();
-            displayMessage(`👋 Welcome back, ${displayName}! Your progress is waiting. Let's conquer more countries!`);
+            displayMessage(`👋 Welcome back, ${displayName}!<br>Your progress is waiting. Let's conquer more countries!`);
         } else {
-            displayMessage(`🌍 Welcome ${displayName}! Your adventure begins here. Let's start discovering new countries!`);
+            displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
             initializeGame();
         }
         updatePlayersProgress();
