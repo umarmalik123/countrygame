@@ -64,10 +64,10 @@ function checkCountry(guess) {
             updateProgressBar();
             updateLetterBreakdown();
             const flag = getCountryFlag(match);
-            const fact = countryFacts[match] || 'No fact available for this country.';
+            const fact = countryFacts[match] || 'Oops! No fact available for this country.';
             displayMessage(`✅<br><b>${match} ${flag} is correct!</b><br><i>💡${fact}</i>`);
             console.log(`Added ${match} to guessed countries`);
-            saveProgress(); // Add this line to auto-save
+            saveProgress();
             updatePlayersProgress();
         } else {
             displayMessage(`😬<br>${match} has already been guessed.`);
@@ -79,6 +79,10 @@ function checkCountry(guess) {
     }
     
     console.log(`Updated guessed countries:`, guessedCountries);
+
+    // Clear the input field and update the guess button state
+    document.getElementById('guess-input').value = '';
+    updateGuessButton();
 }
 
 function normalizeCountryName(name) {
@@ -132,9 +136,6 @@ document.getElementById('guess-button').addEventListener('click', () => {
     const guess = document.getElementById('guess-input').value.trim();
     if (guess.length >= 3) {
         checkCountry(guess);
-        document.getElementById('guess-input').value = '';
-    } else {
-        displayMessage('❌<br>Please enter at least 3 letters.');
     }
 });
 
@@ -201,11 +202,10 @@ function startNewGame() {
         if (playerName) {
             localStorage.removeItem(playerName);
             initializeGame();
-            displayMessage(`Welcome, ${playerName}! Let's start a new game.`);
+            // Removed the welcome message
             updatePlayersProgress();
-        } else {
-            displayMessage('Please enter your name to start a new game.');
         }
+        // Removed the else block that displayed the message
     }
     // If the user clicks "Cancel" in the confirmation dialog, nothing happens
 }

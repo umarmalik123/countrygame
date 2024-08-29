@@ -151,9 +151,18 @@
 
         #guess-button {
             background-color: #4caf50;
+            transition: all 0.3s ease;
         }
         #guess-button:hover {
             background-color: #45a045;
+        }
+
+        /* Update the disabled button style */
+        button:disabled {
+            background-color: #cccccc !important;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         #list-button, #hide-list-button {
@@ -180,6 +189,13 @@
         #resume-game-button:hover {
             background-color: #1976D2; /* Darker blue for hover effect */
         }
+        
+        /* Add this new style for the disabled button */
+        button:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
 </head>
@@ -196,7 +212,7 @@
     <div class="game-section">
         <div style="display: flex; justify-content: center; align-items: center;">
             <input type="text" id="guess-input" placeholder="Enter a country" style="margin-right: 10px;">
-            <button id="guess-button">Guess</button>
+            <button id="guess-button" disabled>Guess</button>
         </div>
         <div style="text-align: center; margin-top: 10px;">
             <button id="list-button">Show Guessed Countries</button>
@@ -235,9 +251,11 @@
     <script src="script.js"></script>
     <script>
         document.getElementById('guess-input').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && this.value.trim().length >= 3) {
                 document.getElementById('guess-button').click();
             }
+            // Enable or disable the guess button based on input length
+            document.getElementById('guess-button').disabled = this.value.trim().length < 3;
         });
         document.getElementById('new-game-button').addEventListener('click', startNewGame);
         document.getElementById('resume-game-button').addEventListener('click', resumeGame);
