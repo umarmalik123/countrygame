@@ -190,8 +190,7 @@ let playerName = '';
 // Add this new function
 function updatePlayerName() {
     const nameInput = document.getElementById('player-name');
-    playerName = nameInput.value.trim();
-    // Removed the welcome message
+    playerName = nameInput.value.trim().toLowerCase(); // Convert to lowercase
 }
 
 // Modify the startNewGame function
@@ -211,21 +210,22 @@ function startNewGame() {
 }
 
 function resumeGame() {
-    updatePlayerName(); // Add this line
+    updatePlayerName();
     if (playerName) {
-        const savedProgress = localStorage.getItem(playerName);
+        const savedProgress = localStorage.getItem(playerName.toLowerCase());
+        const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
         if (savedProgress) {
             const progress = JSON.parse(savedProgress);
             guessedCountries = progress.guessedCountries;
             letterProgress = progress.letterProgress;
             updateProgressBar();
             updateLetterBreakdown();
-            displayMessage(`👋 Welcome back, ${playerName}! Your progress is waiting. Let\'s conquer more countries!`);
+            displayMessage(`👋 Welcome back, ${displayName}! Your progress is waiting. Let's conquer more countries!`);
         } else {
-            displayMessage(`🌍 Welcome ${playerName}! Your adventure begins here. Let\'s start discovering new countries!`);
+            displayMessage(`🌍 Welcome ${displayName}! Your adventure begins here. Let's start discovering new countries!`);
             initializeGame();
         }
-        updatePlayersProgress(); // Add this line
+        updatePlayersProgress();
     } else {
         displayMessage('Please enter your name to resume your game.');
     }
@@ -237,7 +237,7 @@ function saveProgress() {
             guessedCountries: guessedCountries,
             letterProgress: letterProgress
         };
-        localStorage.setItem(playerName, JSON.stringify(progress));
+        localStorage.setItem(playerName.toLowerCase(), JSON.stringify(progress)); // Store with lowercase key
         console.log(`Progress saved for ${playerName}.`);
     }
 }
@@ -264,13 +264,13 @@ function updatePlayersProgress() {
     let playersData = [];
 
     for (let i = 0; i < localStorage.length; i++) {
-        const playerName = localStorage.key(i);
-        const savedProgress = JSON.parse(localStorage.getItem(playerName));
+        const playerKey = localStorage.key(i);
+        const savedProgress = JSON.parse(localStorage.getItem(playerKey));
         
         if (savedProgress && savedProgress.guessedCountries) {
             const progressPercentage = Math.round(savedProgress.guessedCountries.length / totalCountries * 100);
             playersData.push({
-                name: playerName,
+                name: playerKey, // Use the key as the name (it's already lowercase)
                 percentage: progressPercentage,
                 count: savedProgress.guessedCountries.length
             });
@@ -282,7 +282,9 @@ function updatePlayersProgress() {
 
     playersData.forEach((player, index) => {
         const playerDiv = document.createElement('div');
-        playerDiv.innerHTML = `${index + 1}. <strong>${player.name}</strong>: ${player.percentage}% (${player.count}/${totalCountries} countries)`;
+        // Capitalize the first letter of the name for display
+        const displayName = player.name.charAt(0).toUpperCase() + player.name.slice(1);
+        playerDiv.innerHTML = `${index + 1}. <strong>${displayName}</strong>: ${player.percentage}% (${player.count}/${totalCountries} countries)`;
         playersProgressDiv.appendChild(playerDiv);
     });
 }
