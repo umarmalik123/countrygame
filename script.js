@@ -171,7 +171,7 @@ function displayGuessedCountries() {
 function updateGuessButton() {
     const guessInput = document.getElementById('guess-input');
     const guessButton = document.getElementById('guess-button');
-    guessButton.disabled = guessInput.value.trim().length < 3;
+    guessButton.disabled = guessInput.value.trim().length < 4;
 }
 
 // Modify the DOMContentLoaded event listener

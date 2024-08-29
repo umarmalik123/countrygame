@@ -251,11 +251,11 @@
     <script src="script.js"></script>
     <script>
         document.getElementById('guess-input').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter' && this.value.trim().length >= 3) {
+            if (event.key === 'Enter' && this.value.trim().length >= 4) {
                 document.getElementById('guess-button').click();
             }
             // Enable or disable the guess button based on input length
-            document.getElementById('guess-button').disabled = this.value.trim().length < 3;
+            document.getElementById('guess-button').disabled = this.value.trim().length < 4;
         });
         document.getElementById('new-game-button').addEventListener('click', startNewGame);
         document.getElementById('resume-game-button').addEventListener('click', resumeGame);
