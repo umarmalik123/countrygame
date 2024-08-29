@@ -224,9 +224,9 @@ function resumeGame() {
             letterProgress = progress.letterProgress;
             updateProgressBar();
             updateLetterBreakdown();
-            displayMessage(`Welcome back, ${playerName}! Your progress has been loaded.`);
+            displayMessage(`👋 Welcome back, ${playerName}! Your progress is waiting. Let\'s conquer more countries!`);
         } else {
-            displayMessage(`No saved progress found for ${playerName}. Starting a new game.`);
+            displayMessage(`🌍 Welcome ${playerName}! Your adventure begins here. Let\'s start discovering new countries!`);
             initializeGame();
         }
         updatePlayersProgress(); // Add this line
