@@ -190,11 +190,7 @@ let playerName = '';
 function updatePlayerName() {
     const nameInput = document.getElementById('player-name');
     playerName = nameInput.value.trim();
-    if (playerName) {
-        displayMessage(`Welcome, ${playerName}!`);
-    } else {
-        displayMessage('Please enter your name.');
-    }
+    // Removed the welcome message
 }
 
 // Modify the startNewGame function
