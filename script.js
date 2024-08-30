@@ -288,3 +288,27 @@ function updatePlayersProgress() {
         playersProgressDiv.appendChild(playerDiv);
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('guess-input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' && this.value.trim().length >= 4) {
+            document.getElementById('guess-button').click();
+        }
+        // Enable or disable the guess button based on input length
+        document.getElementById('guess-button').disabled = this.value.trim().length < 4;
+    });
+    
+    document.getElementById('new-game-button').addEventListener('click', startNewGame);
+    document.getElementById('resume-game-button').addEventListener('click', resumeGame);
+
+    document.getElementById('help-button').addEventListener('click', function() {
+        const instructions = document.getElementById('instructions');
+        if (instructions.style.display === 'none') {
+            instructions.style.display = 'block';
+            this.textContent = 'X';
+        } else {
+            instructions.style.display = 'none';
+            this.textContent = '?';
+        }
+    });
+});
