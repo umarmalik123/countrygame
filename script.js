@@ -227,7 +227,7 @@ function resumeGame() {
         }
         updatePlayersProgress();
     } else {
-        displayMessage('🌍 Enter your name first to start or resume your journey!');
+        displayMessage('🌍 Enter your name to start or resume your journey!');
     }
 }
 
