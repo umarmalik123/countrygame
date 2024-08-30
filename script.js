@@ -1,3 +1,7 @@
+const supabaseUrl = 'https://fewmxheuuyotbfcklkcf.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
 
@@ -195,48 +199,60 @@ function updatePlayerName() {
 
 // Modify the startNewGame function
 async function startNewGame() {
+    // Show a confirmation dialog
     if (confirm("Are you sure you want to start a new game? Your current progress will be lost!")) {
         updatePlayerName();
         if (playerName) {
-            const { error } = await supabase
-                .from('player_progress')
-                .delete()
-                .eq('player_name', playerName.toLowerCase());
+            try {
+                // Delete the player's progress from Supabase
+                const { error } = await supabase
+                    .from('player_progress')
+                    .delete()
+                    .eq('player_name', playerName);
 
-            if (error) {
-                console.error('Error deleting progress:', error);
+                if (error) throw error;
+
+                initializeGame();
+                updatePlayersProgress();
+                displayMessage(`🌍 Welcome ${playerName}! Your new adventure begins here.`);
+            } catch (error) {
+                console.error('Error starting new game:', error);
+                displayMessage('An error occurred while starting a new game. Please try again.');
             }
-
-            initializeGame();
-            updatePlayersProgress();
+        } else {
+            displayMessage('Please enter your name to start a new game.');
         }
     }
+    // If the user clicks "Cancel" in the confirmation dialog, nothing happens
 }
 
 async function resumeGame() {
     updatePlayerName();
     if (playerName) {
-        const { data, error } = await supabase
-            .from('player_progress')
-            .select('progress')
-            .eq('player_name', playerName.toLowerCase())
-            .single();
+        try {
+            const { data, error } = await supabase
+                .from('player_progress')
+                .select('progress')
+                .eq('player_name', playerName.toLowerCase())
+                .single();
 
-        const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
-        
-        if (error) {
-            console.error('Error fetching progress:', error);
-            displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
-            initializeGame();
-        } else if (data) {
-            const progress = data.progress;
-            guessedCountries = progress.guessedCountries;
-            letterProgress = progress.letterProgress;
-            updateProgressBar();
-            updateLetterBreakdown();
-            displayMessage(`👋 Welcome back, ${displayName}!<br>Your progress is waiting. Let's conquer more countries!`);
-        } else {
-            displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
+            if (error) throw error;
+
+            const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
+            if (data && data.progress) {
+                const progress = data.progress;
+                guessedCountries = progress.guessedCountries;
+                letterProgress = progress.letterProgress;
+                updateProgressBar();
+                updateLetterBreakdown();
+                displayMessage(`👋 Welcome back, ${displayName}!<br>Your progress is waiting. Let's conquer more countries!`);
+            } else {
+                displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
+                initializeGame();
+            }
+        } catch (error) {
+            console.error('Error resuming game:', error);
+            displayMessage('An error occurred while resuming the game. Please try again.');
             initializeGame();
         }
         updatePlayersProgress();
@@ -246,21 +262,23 @@ async function resumeGame() {
 }
 
 async function saveProgress() {
-    if (playerName) {
-        const progress = {
-            guessedCountries: guessedCountries,
-            letterProgress: letterProgress
-        };
-        
+    const playerName = document.getElementById('player-name').value.toLowerCase();
+    if (!playerName) return;
+
+    const progress = {
+        guessedCountries: guessedCountries,
+        letterProgress: letterProgress
+    };
+
+    try {
         const { data, error } = await supabase
             .from('player_progress')
-            .upsert({ player_name: playerName.toLowerCase(), progress: progress }, { onConflict: 'player_name' });
-        
-        if (error) {
-            console.error('Error saving progress:', error);
-        } else {
-            console.log(`Progress saved for ${playerName}.`);
-        }
+            .upsert({ player_name: playerName, progress: progress }, { onConflict: 'player_name' });
+
+        if (error) throw error;
+        console.log('Progress saved to Supabase');
+    } catch (error) {
+        console.error('Error saving progress:', error);
     }
 }
 
@@ -272,6 +290,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('player-name').addEventListener('input', updatePlayerName); // Add this line
     document.getElementById('new-game-button').addEventListener('click', startNewGame);
     document.getElementById('resume-game-button').addEventListener('click', resumeGame);
+    // Remove the following line:
+    // document.getElementById('save-progress-button').addEventListener('click', saveProgress);
     
     updateGuessButton();
     updatePlayersProgress(); // Add this line
@@ -281,31 +301,36 @@ async function updatePlayersProgress() {
     const playersProgressDiv = document.getElementById('players-progress');
     playersProgressDiv.innerHTML = '';
 
-    const { data, error } = await supabase
-        .from('player_progress')
-        .select('player_name, progress');
+    try {
+        const { data, error } = await supabase
+            .from('player_progress')
+            .select('player_name, progress');
 
-    if (error) {
-        console.error('Error fetching players progress:', error);
-        return;
+        if (error) throw error;
+
+        let playersData = data.map(player => {
+            const progressPercentage = Math.round(player.progress.guessedCountries.length / totalCountries * 100);
+            return {
+                name: player.player_name,
+                percentage: progressPercentage,
+                count: player.progress.guessedCountries.length
+            };
+        });
+
+        // Sort players by percentage in descending order
+        playersData.sort((a, b) => b.percentage - a.percentage);
+
+        playersData.forEach((player, index) => {
+            const playerDiv = document.createElement('div');
+            // Capitalize the first letter of the name for display
+            const displayName = player.name.charAt(0).toUpperCase() + player.name.slice(1);
+            playerDiv.innerHTML = `${index + 1}. <strong>${displayName}</strong>: ${player.percentage}% (${player.count}/${totalCountries} countries)`;
+            playersProgressDiv.appendChild(playerDiv);
+        });
+    } catch (error) {
+        console.error('Error updating players progress:', error);
+        playersProgressDiv.innerHTML = 'Error loading leaderboard. Please try again later.';
     }
-
-    let playersData = data.map(item => ({
-        name: item.player_name,
-        percentage: Math.round(item.progress.guessedCountries.length / totalCountries * 100),
-        count: item.progress.guessedCountries.length
-    }));
-
-    // Sort players by percentage in descending order
-    playersData.sort((a, b) => b.percentage - a.percentage);
-
-    playersData.forEach((player, index) => {
-        const playerDiv = document.createElement('div');
-        // Capitalize the first letter of the name for display
-        const displayName = player.name.charAt(0).toUpperCase() + player.name.slice(1);
-        playerDiv.innerHTML = `${index + 1}. <strong>${displayName}</strong>: ${player.percentage}% (${player.count}/${totalCountries} countries)`;
-        playersProgressDiv.appendChild(playerDiv);
-    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -331,5 +356,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-const supabase = supabase.createClient('https://fewmxheuuyotbfcklkcf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg');
