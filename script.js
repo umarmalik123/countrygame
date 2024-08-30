@@ -1,8 +1,12 @@
-const supabase = supabaseJs.createClient(supabaseUrl, supabaseKey);
-import { countries, countryToCode, countryFacts } from './countryData.js';
+import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 
 const supabaseUrl = 'https://fewmxheuuyotbfcklkcf.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg';
+
+// Initialize the Supabase client
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+import { countries, countryToCode, countryFacts } from './countryData.js';
 
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
