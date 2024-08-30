@@ -203,16 +203,63 @@
             color: #666666;
             cursor: not-allowed;
         }
+
+        #instructions {
+            text-align: left;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #instructions h3 {
+            text-align: center;
+        }
+
+        #instructions ol {
+            padding-left: 20px;
+        }
+
+        #instructions li {
+            margin-bottom: 10px;
+        }
+
+        #help-button {
+            background-color: #FFA500;
+            color: white;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        #help-button:hover {
+            background-color: #FF8C00;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
 </head>
 <body>
     <h1>NationNerds 🌍</h1>
     
+    <!-- Add this new section for the instructions -->
+    <div class="game-section" id="instructions" style="display: none;">
+        <h3>🌍 How to Play</h3>
+        <h4>Guess all the countries!</h4>
+        <ol>
+            <li><strong>Enter Your Name</strong> to start or continue your game!</li>
+            <li><strong>Guess countries</strong> by typing them in and hitting "Guess".</li>
+            <li><strong>Track Your Progress</strong> with the progress bar and guessed list.</li>
+            <li><strong>Track your triumphs</strong> and see how close you are to becoming the ultimate Nation Nerd!</li>
+            <li><strong>Save & Resume</strong> anytime!</li>
+        </ol>
+        <p>Can you guess them all? Let's go! 🌎</p>
+    </div>
+
     <div class="game-section">
         <div style="display: flex; justify-content: center; align-items: center;">
             <input type="text" id="player-name" placeholder="Enter your name" style="margin-right: 10px;">
             <button id="resume-game-button">Start</button>
+            <!-- Add the question mark button -->
+            <button id="help-button" style="margin-left: 10px; border-radius: 50%; width: 32px; height: 32px; font-weight: bold;">?</button>
         </div>
     </div>
 
@@ -268,6 +315,18 @@
         document.getElementById('resume-game-button').addEventListener('click', resumeGame);
         // Remove the following line:
         // document.getElementById('save-progress-button').addEventListener('click', saveProgress);
+
+        // Add this new event listener for the help button
+        document.getElementById('help-button').addEventListener('click', function() {
+            const instructions = document.getElementById('instructions');
+            if (instructions.style.display === 'none') {
+                instructions.style.display = 'block';
+                this.textContent = 'X';
+            } else {
+                instructions.style.display = 'none';
+                this.textContent = '?';
+            }
+        });
     </script>
 </body>
 </html>
