@@ -194,28 +194,42 @@ function updatePlayerName() {
 }
 
 // Modify the startNewGame function
-function startNewGame() {
-    // Show a confirmation dialog
+async function startNewGame() {
     if (confirm("Are you sure you want to start a new game? Your current progress will be lost!")) {
         updatePlayerName();
         if (playerName) {
-            localStorage.removeItem(playerName);
+            const { error } = await supabase
+                .from('player_progress')
+                .delete()
+                .eq('player_name', playerName.toLowerCase());
+
+            if (error) {
+                console.error('Error deleting progress:', error);
+            }
+
             initializeGame();
-            // Removed the welcome message
             updatePlayersProgress();
         }
-        // Removed the else block that displayed the message
     }
-    // If the user clicks "Cancel" in the confirmation dialog, nothing happens
 }
 
-function resumeGame() {
+async function resumeGame() {
     updatePlayerName();
     if (playerName) {
-        const savedProgress = localStorage.getItem(playerName.toLowerCase());
+        const { data, error } = await supabase
+            .from('player_progress')
+            .select('progress')
+            .eq('player_name', playerName.toLowerCase())
+            .single();
+
         const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
-        if (savedProgress) {
-            const progress = JSON.parse(savedProgress);
+        
+        if (error) {
+            console.error('Error fetching progress:', error);
+            displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
+            initializeGame();
+        } else if (data) {
+            const progress = data.progress;
             guessedCountries = progress.guessedCountries;
             letterProgress = progress.letterProgress;
             updateProgressBar();
@@ -231,14 +245,22 @@ function resumeGame() {
     }
 }
 
-function saveProgress() {
+async function saveProgress() {
     if (playerName) {
         const progress = {
             guessedCountries: guessedCountries,
             letterProgress: letterProgress
         };
-        localStorage.setItem(playerName.toLowerCase(), JSON.stringify(progress)); // Store with lowercase key
-        console.log(`Progress saved for ${playerName}.`);
+        
+        const { data, error } = await supabase
+            .from('player_progress')
+            .upsert({ player_name: playerName.toLowerCase(), progress: progress }, { onConflict: 'player_name' });
+        
+        if (error) {
+            console.error('Error saving progress:', error);
+        } else {
+            console.log(`Progress saved for ${playerName}.`);
+        }
     }
 }
 
@@ -250,32 +272,29 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('player-name').addEventListener('input', updatePlayerName); // Add this line
     document.getElementById('new-game-button').addEventListener('click', startNewGame);
     document.getElementById('resume-game-button').addEventListener('click', resumeGame);
-    // Remove the following line:
-    // document.getElementById('save-progress-button').addEventListener('click', saveProgress);
     
     updateGuessButton();
     updatePlayersProgress(); // Add this line
 });
 
-function updatePlayersProgress() {
+async function updatePlayersProgress() {
     const playersProgressDiv = document.getElementById('players-progress');
     playersProgressDiv.innerHTML = '';
 
-    let playersData = [];
+    const { data, error } = await supabase
+        .from('player_progress')
+        .select('player_name, progress');
 
-    for (let i = 0; i < localStorage.length; i++) {
-        const playerKey = localStorage.key(i);
-        const savedProgress = JSON.parse(localStorage.getItem(playerKey));
-        
-        if (savedProgress && savedProgress.guessedCountries) {
-            const progressPercentage = Math.round(savedProgress.guessedCountries.length / totalCountries * 100);
-            playersData.push({
-                name: playerKey, // Use the key as the name (it's already lowercase)
-                percentage: progressPercentage,
-                count: savedProgress.guessedCountries.length
-            });
-        }
+    if (error) {
+        console.error('Error fetching players progress:', error);
+        return;
     }
+
+    let playersData = data.map(item => ({
+        name: item.player_name,
+        percentage: Math.round(item.progress.guessedCountries.length / totalCountries * 100),
+        count: item.progress.guessedCountries.length
+    }));
 
     // Sort players by percentage in descending order
     playersData.sort((a, b) => b.percentage - a.percentage);
@@ -312,3 +331,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+const supabase = supabase.createClient('https://fewmxheuuyotbfcklkcf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg');
