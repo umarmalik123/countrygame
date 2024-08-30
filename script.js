@@ -1,6 +1,8 @@
+import { createClient } from '@supabase/supabase-js'
+
 const supabaseUrl = 'https://fewmxheuuyotbfcklkcf.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
@@ -279,6 +281,7 @@ async function saveProgress() {
         console.log('Progress saved to Supabase');
     } catch (error) {
         console.error('Error saving progress:', error);
+        displayMessage('An error occurred while saving progress. Please try again.');
     }
 }
 
@@ -298,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function updatePlayersProgress() {
+    console.log('Updating players progress...');
     const playersProgressDiv = document.getElementById('players-progress');
     playersProgressDiv.innerHTML = '';
 
@@ -307,6 +311,8 @@ async function updatePlayersProgress() {
             .select('player_name, progress');
 
         if (error) throw error;
+
+        console.log('Received data from Supabase:', data);
 
         let playersData = data.map(player => {
             const progressPercentage = Math.round(player.progress.guessedCountries.length / totalCountries * 100);
