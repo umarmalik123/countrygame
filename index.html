@@ -121,6 +121,13 @@
             margin-right: auto;
             box-sizing: border-box; /* Add this line */
         }
+        /* Add this new style for the leaderboard section */
+        .game-section.leaderboard {
+            padding-top: 10px; /* You can now set this to any value */
+        }
+        .game-section.leaderboard h3 {
+            margin-top: 0; /* Remove top margin from the heading */
+        }
         .button-container {
             display: flex;
             justify-content: center;
@@ -232,7 +239,7 @@
     </div>
 
     <!-- Add this new section -->
-    <div class="game-section">
+    <div class="game-section leaderboard">
         <h3>Leaderboard 🏆</h3>
         <div id="players-progress"></div>
     </div>
