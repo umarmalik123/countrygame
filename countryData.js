@@ -266,3 +266,6 @@ const countryFacts = {
     'Zambia': 'Zambia is home to Victoria Falls, one of the largest and most famous waterfalls in the world, known locally as "Mosi oa Tunya," meaning "The Smoke That Thunders." The falls are a major attraction on the Zambezi River and are shared with neighboring Zimbabwe.',
     'Zimbabwe': 'Zimbabwe is known for the Great Zimbabwe Ruins, the remains of a medieval city that was once the capital of the Kingdom of Zimbabwe. The ruins are a UNESCO World Heritage Site and represent the largest ancient stone construction in sub Saharan Africa.'
 };
+
+// Export the variables
+export { countries, countryToCode, countryFacts };
