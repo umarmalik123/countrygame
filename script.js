@@ -1,8 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
+import { countries, countryToCode, countryFacts } from './countryData.js';
 
 const supabaseUrl = 'https://fewmxheuuyotbfcklkcf.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZld214aGV1dXlvdGJmY2tsa2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwNDA5NDksImV4cCI6MjA0MDYxNjk0OX0.0XcBvmtxCKWU7deN5uz8q58f6gcJ-OdkrH9jB0mbkNg';
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = supabaseJs.createClient(supabaseUrl, supabaseKey);
 
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
@@ -107,8 +107,12 @@ const fuseOptions = {
     keys: ['name']
 };
 
-const countryList = Object.values(countries).flat().map(country => ({ name: country }));
-const fuse = new Fuse(countryList, fuseOptions);
+let fuse;
+
+function initializeFuse() {
+    const countryList = Object.values(countries).flat().map(country => ({ name: country }));
+    fuse = new Fuse(countryList, fuseOptions);
+}
 
 function findClosestMatch(guess) {
     const results = fuse.search(guess);
@@ -183,12 +187,33 @@ function updateGuessButton() {
 // Modify the DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', () => {
     initializeGame();
-    
-    // Add event listener for input changes
-    document.getElementById('guess-input').addEventListener('input', updateGuessButton);
-    
-    // Initial button state
     updateGuessButton();
+    updatePlayersProgress();
+
+    document.getElementById('guess-input').addEventListener('input', updateGuessButton);
+    document.getElementById('guess-input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' && this.value.trim().length >= 4) {
+            document.getElementById('guess-button').click();
+        }
+        // Enable or disable the guess button based on input length
+        document.getElementById('guess-button').disabled = this.value.trim().length < 4;
+    });
+    
+    document.getElementById('player-name').addEventListener('input', updatePlayerName);
+    document.getElementById('new-game-button').addEventListener('click', startNewGame);
+    document.getElementById('resume-game-button').addEventListener('click', resumeGame);
+    document.getElementById('help-button').addEventListener('click', function() {
+        const instructions = document.getElementById('instructions');
+        if (instructions.style.display === 'none') {
+            instructions.style.display = 'block';
+            this.textContent = 'X';
+        } else {
+            instructions.style.display = 'none';
+            this.textContent = '?';
+        }
+    });
+
+    initializeFuse();
 });
 
 let playerName = '';
@@ -238,7 +263,16 @@ async function resumeGame() {
                 .eq('player_name', playerName.toLowerCase())
                 .single();
 
-            if (error) throw error;
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    // No data found, start a new game
+                    const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
+                    displayMessage(`🌍 Welcome ${displayName}!<br>Your adventure begins here. Let's start discovering new countries!`);
+                    initializeGame();
+                } else {
+                    throw error;
+                }
+            }
 
             const displayName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
             if (data && data.progress) {
@@ -285,21 +319,6 @@ async function saveProgress() {
     }
 }
 
-// Modify the DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', () => {
-    initializeGame();
-    
-    document.getElementById('guess-input').addEventListener('input', updateGuessButton);
-    document.getElementById('player-name').addEventListener('input', updatePlayerName); // Add this line
-    document.getElementById('new-game-button').addEventListener('click', startNewGame);
-    document.getElementById('resume-game-button').addEventListener('click', resumeGame);
-    // Remove the following line:
-    // document.getElementById('save-progress-button').addEventListener('click', saveProgress);
-    
-    updateGuessButton();
-    updatePlayersProgress(); // Add this line
-});
-
 async function updatePlayersProgress() {
     console.log('Updating players progress...');
     const playersProgressDiv = document.getElementById('players-progress');
@@ -338,27 +357,3 @@ async function updatePlayersProgress() {
         playersProgressDiv.innerHTML = 'Error loading leaderboard. Please try again later.';
     }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('guess-input').addEventListener('keyup', function(event) {
-        if (event.key === 'Enter' && this.value.trim().length >= 4) {
-            document.getElementById('guess-button').click();
-        }
-        // Enable or disable the guess button based on input length
-        document.getElementById('guess-button').disabled = this.value.trim().length < 4;
-    });
-    
-    document.getElementById('new-game-button').addEventListener('click', startNewGame);
-    document.getElementById('resume-game-button').addEventListener('click', resumeGame);
-
-    document.getElementById('help-button').addEventListener('click', function() {
-        const instructions = document.getElementById('instructions');
-        if (instructions.style.display === 'none') {
-            instructions.style.display = 'block';
-            this.textContent = 'X';
-        } else {
-            instructions.style.display = 'none';
-            this.textContent = '?';
-        }
-    });
-});
