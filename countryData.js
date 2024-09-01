@@ -295,7 +295,7 @@ const countryHints = {
     'Bulgaria': 'A Balkan country known for its roses, yogurt, and ancient Thracian sites.',
     'Burkina Faso': 'A West African country known for its music, film festival (FESPACO), and the capital, Ouagadougou.',
     'Burundi': 'A small landlocked country in East Africa known for its drumming culture and scenic Lake Tanganyika, one of the world\'s deepest lakes.',
-    'Cabo Verde (Cape Verde)': 'An archipelago off the west coast of Africa, known for its Creole Portuguese-African culture, morna music, and beautiful volcanic islands.',
+    'Cabo Verde': 'An archipelago off the west coast of Africa, known for its Creole Portuguese-African culture, morna music, and beautiful volcanic islands.',
     'Cambodia': 'A Southeast Asian country famous for the ancient temple complex of Angkor Wat, one of the largest religious monuments in the world.',
     'Cameroon': 'An African country known as "Africa in Miniature" because it features many of the continent\'s major climates and ecosystems, from rainforests to deserts.',
     'Canada': 'The second-largest country in the world by land area, known for its maple syrup, ice hockey, and Niagara Falls.',
