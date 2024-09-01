@@ -346,14 +346,14 @@ async function updatePlayersProgress() {
             };
         });
 
-        // Sort players by percentage in descending order
-        playersData.sort((a, b) => b.percentage - a.percentage);
+        // Sort players by count (number of countries guessed) in descending order
+        playersData.sort((a, b) => b.count - a.count);
 
         playersData.forEach((player, index) => {
             const playerDiv = document.createElement('div');
             // Capitalize the first letter of the name for display
             const displayName = player.name.charAt(0).toUpperCase() + player.name.slice(1);
-            playerDiv.innerHTML = `${index + 1}. <strong>${displayName}</strong>: ${player.percentage}% (${player.count}/${totalCountries} countries)`;
+            playerDiv.innerHTML = `${index + 1}. <strong>${displayName}</strong>: ${player.count}/${totalCountries} countries (${player.percentage}%)`;
             playersProgressDiv.appendChild(playerDiv);
         });
     } catch (error) {
