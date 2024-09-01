@@ -6,7 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-import { countries, countryToCode, countryFacts } from './countryData.js';
+import { countries, countryToCode, countryFacts, countryHints } from './countryData.js';
 
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
@@ -43,9 +43,27 @@ function updateLetterBreakdown() {
             blocksDiv.appendChild(block);
         }
         
+        // Add hint button
+        const hintButton = document.createElement('button');
+        hintButton.className = 'hint-button';
+        hintButton.innerHTML = '💡';
+        hintButton.addEventListener('click', () => showHint(letter));
+        blocksDiv.appendChild(hintButton);
+        
         letterDiv.appendChild(labelSpan);
         letterDiv.appendChild(blocksDiv);
         breakdownContainer.appendChild(letterDiv);
+    }
+}
+
+function showHint(letter) {
+    const unguessedCountries = countries[letter].filter(country => !guessedCountries.includes(country));
+    if (unguessedCountries.length > 0) {
+        const nextCountry = unguessedCountries[0];
+        const hint = countryHints[nextCountry];
+        displayMessage(`💡 Hint for next country starting with "${letter}": ${hint}`);
+    } else {
+        displayMessage(`🎉 Awesome! You've guessed all countries starting with "${letter}".`);
     }
 }
 

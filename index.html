@@ -111,7 +111,7 @@
         }
         .letter-blocks {
             display: grid;
-            grid-template-columns: repeat(26, 1fr); /* 26 columns for 26 possible blocks */
+            grid-template-columns: repeat(27, 1fr); /* 27 columns for 26 blocks + hint button */
             gap: 2px;
             width: calc(100% - 100px);
         }
@@ -123,6 +123,17 @@
         }
         .block.filled {
             background-color: #4caf50;
+        }
+        .hint-button {
+            width: 20px;
+            height: 20px;
+            background-color: #fff7e8;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         footer {
             margin-top: 50px;
