@@ -137,12 +137,12 @@ function getCountryFlag(countryName) {
 
 // Function to update the progress bar
 function updateProgressBar() {
-    const progress = (guessedCountries.length / totalCountries) * 100;
+    const progress = Math.round((guessedCountries.length / totalCountries) * 100);
     const progressBar = document.querySelector('#progress-bar > div');
     const progressPercentage = document.getElementById('progress-percentage');
     
     progressBar.style.width = `${progress}%`;
-    progressPercentage.textContent = `${Math.round(progress)}%`;
+    progressPercentage.textContent = `${progress}%`;
 }
 
 // Event listeners for buttons
