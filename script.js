@@ -179,7 +179,11 @@ document.addEventListener('DOMContentLoaded', initializeGame);
 function displayGuessedCountries() {
     const guessedList = document.getElementById('guessed-countries');
     guessedList.innerHTML = '<h3>Guessed Countries:</h3>';
-    guessedList.innerHTML += guessedCountries.join(', ');
+    
+    // Sort the guessedCountries array alphabetically
+    const sortedCountries = [...guessedCountries].sort((a, b) => a.localeCompare(b));
+    
+    guessedList.innerHTML += sortedCountries.join(', ');
 }
 
 function updateGuessButton() {
