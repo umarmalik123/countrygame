@@ -15,6 +15,20 @@
             background: linear-gradient(to right, #cdffd8, #94b9ff); /* Gradient from left to right */
             color: #000;
         }
+        
+        h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
         #progress-bar {
             width: 100%;
             background-color: #f3f3f3;
@@ -245,7 +259,7 @@
     </style>
 </head>
 <body>
-    <h1>NationNerds 🌍</h1>
+    <h1><span class="gradient-text">NationNerds</span> 🌍</h1>
     
     <!-- Add this new section for the instructions -->
     <div class="game-section" id="instructions" style="display: none;">
