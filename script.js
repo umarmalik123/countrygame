@@ -48,6 +48,13 @@ function updateLetterBreakdown() {
         hintButton.className = 'hint-button';
         hintButton.innerHTML = '💡';
         hintButton.addEventListener('click', () => showHint(letter));
+        
+        // Check if there are unguessed countries for this letter
+        const unguessedCountries = countries[letter].filter(country => !guessedCountries.includes(country));
+        if (unguessedCountries.length === 0) {
+            hintButton.style.display = 'none'; // Hide the button if no unguessed countries
+        }
+        
         blocksDiv.appendChild(hintButton);
         
         letterDiv.appendChild(labelSpan);
