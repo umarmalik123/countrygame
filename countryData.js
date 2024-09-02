@@ -461,7 +461,7 @@ const countryHints = {
     'Vietnam': 'A Southeast Asian country famous for its vibrant cities like Hanoi and Ho Chi Minh City, delicious street food like pho and banh mi, and scenic landscapes such as Ha Long Bay.',
     'Yemen': 'A Middle Eastern country known for its ancient city of Sana\'a, a UNESCO World Heritage Site, and the unique terraced fields and mud-brick skyscrapers of Shibam.',
     'Zambia': 'A landlocked country in Southern Africa known for Victoria Falls, one of the largest and most famous waterfalls in the world, shared with Zimbabwe.',
-    'Zimbabwe': 'A Southern African country known for the Great Zimbabwe Ruins, an ancient city that was the capital of the Kingdom of Zimbabwe, and also for its side of Victoria Falls.',
+    'Zimbabwe': 'A Southern African country known for the Great Z Ruins, an ancient city that was the capital of the Kingdom of Z, and also for its side of Victoria Falls.',
 }
 
 // Export the variables
