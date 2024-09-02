@@ -198,10 +198,13 @@ function displayGuessedCountries() {
     const guessedList = document.getElementById('guessed-countries');
     guessedList.innerHTML = '<h3>Guessed Countries:</h3>';
     
-    // Sort the guessedCountries array alphabetically
-    const sortedCountries = [...guessedCountries].sort((a, b) => a.localeCompare(b));
-    
-    guessedList.innerHTML += sortedCountries.join(', ');
+    if (guessedCountries.length === 0) {
+        guessedList.innerHTML += 'Zero guesses so far. Start naming those countries above!';
+    } else {
+        // Sort the guessedCountries array alphabetically
+        const sortedCountries = [...guessedCountries].sort((a, b) => a.localeCompare(b));
+        guessedList.innerHTML += sortedCountries.join(', ');
+    }
 }
 
 function updateGuessButton() {
