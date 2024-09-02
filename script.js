@@ -12,6 +12,7 @@ let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
 
 let letterProgress = {};
+let hintIndices = {};
 
 function initializeLetterProgress() {
     for (let letter in countries) {
@@ -66,9 +67,15 @@ function updateLetterBreakdown() {
 function showHint(letter) {
     const unguessedCountries = countries[letter].filter(country => !guessedCountries.includes(country));
     if (unguessedCountries.length > 0) {
-        const nextCountry = unguessedCountries[0];
-        const hint = countryHints[nextCountry];
-        displayMessage(`💡 Hint for next country starting with "${letter}": ${hint}`);
+        if (!hintIndices[letter]) {
+            hintIndices[letter] = 0;
+        }
+        const currentCountry = unguessedCountries[hintIndices[letter]];
+        const hint = countryHints[currentCountry];
+        displayMessage(`💡 Hint for a country starting with "${letter}": ${hint}`);
+        
+        // Move to the next hint index, or back to 0 if we've reached the end
+        hintIndices[letter] = (hintIndices[letter] + 1) % unguessedCountries.length;
     } else {
         displayMessage(`🎉 Awesome! You've guessed all countries starting with "${letter}".`);
     }
