@@ -491,7 +491,7 @@ const countryNot = {
     'Transnistria': 'Transnistria is not considered a country because it is a self-declared breakaway state within Moldova that lacks international recognition as a sovereign state.',
     'Nagorno-Karabakh (Artsakh)': 'Nagorno-Karabakh (Artsakh) is not considered a country because it is a self-declared republic within Azerbaijan and is not recognized as a sovereign state by any UN member state.',
     'Northern Cyprus': 'Northern Cyprus is not considered a country because it is a self-declared state recognized only by Turkey and is considered part of Cyprus by the international community.',
-    'Åland Islands': 'The Åland Islands are not considered a country because they are an autonomous region of Finland and do not have full sovereignty as an independent state.',
+    'Aland Islands': 'The Åland Islands are not considered a country because they are an autonomous region of Finland and do not have full sovereignty as an independent state.',
     'Cook Islands': 'The Cook Islands are not considered a country because they are a self-governing territory in free association with New Zealand, and are not recognized as a fully independent sovereign state.',
     'Niue': 'Niue is not considered a country because it is a self-governing territory in free association with New Zealand and is not recognized as a fully independent sovereign state.',
     'Pitcairn Islands': 'The Pitcairn Islands are not considered a country because they are a British Overseas Territory and are not recognized as an independent country.',

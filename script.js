@@ -6,7 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-import { countries, countryToCode, countryFacts, countryHints } from './countryData.js';
+import { countries, countryToCode, countryFacts, countryHints, countryNot } from './countryData.js';
 
 let guessedCountries = [];
 let totalCountries = Object.values(countries).flat().length;
@@ -93,6 +93,14 @@ function checkCountry(guess) {
     // Normalize the guess
     const normalizedGuess = normalizeCountryName(guess);
     console.log(`Normalized guess: ${normalizedGuess}`);
+
+    // Check if the guess is in the countryNot list (case-insensitive)
+    const notCountryKey = Object.keys(countryNot).find(key => key.toLowerCase() === normalizedGuess.toLowerCase());
+    if (notCountryKey) {
+        displayMessage(`❌<br><i>${countryNot[notCountryKey]}</i>`);
+        console.log(`${notCountryKey} is in the countryNot list`);
+        return;
+    }
 
     // Find the closest match
     const match = findClosestMatch(normalizedGuess);
