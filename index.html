@@ -275,9 +275,57 @@
         #help-button:hover {
             background-color: #FF8C00;
         }
+
+        body.dark-mode {
+            background: linear-gradient(to right, #1a1a1a, #2c3e50);
+            color: #fff;
+        }
+
+        body.dark-mode .game-section,
+        body.dark-mode #instructions {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode button {
+            background-color: #333;
+            color: #fff;
+            border-color: #555;
+        }
+
+        body.dark-mode .block {
+            background-color: #444;
+        }
+
+        body.dark-mode .block.filled {
+            background-color: #4caf50;
+        }
+
+        body.dark-mode #progress-bar {
+            background-color: #444;
+        }
+
+        body.dark-mode #progress-percentage {
+            color: #fff;
+        }
+
+        body.dark-mode .tagline {
+            color: #ffffff; /* Make tagline white in dark mode */
+        }
+
+        #dark-mode-toggle {
+            background-color: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
+    <div style="text-align: right; padding: 10px;">
+        <button id="dark-mode-toggle">🌙</button>
+    </div>
     <a href="https://www.nationnerds.com" style="text-decoration: none;">
         <h1><span class="gradient-text">NationNerds</span> 🌍</h1>
         <p class="tagline">194 Countries. Can you name them all?</p>
@@ -347,5 +395,30 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="countryData.js" type="module"></script>
     <script src="script.js" type="module"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.textContent = '☀️';
+            }
+        });
+
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                document.getElementById('dark-mode-toggle').textContent = '☀️';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                document.getElementById('dark-mode-toggle').textContent = '🌙';
+            }
+        }
+    </script>
 </body>
 </html>
