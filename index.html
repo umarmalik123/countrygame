@@ -19,7 +19,7 @@
         h1 {
             font-weight: bold;
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .gradient-text {
@@ -31,10 +31,11 @@
 
         .tagline {
             font-style: normal;
+            text-align: center;
             font-weight: bold;
             color: #000000;
-            margin-top: -10px;
-            margin-bottom: 20px;
+            margin-top: -20px;
+            margin-bottom: 15px;
         }
 
         #progress-bar {
@@ -316,21 +317,24 @@
         #dark-mode-toggle {
             background-color: transparent;
             border: none;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             padding: 5px;
         }
     </style>
 </head>
 <body>
-    <div style="text-align: right; padding: 10px;">
-        <button id="dark-mode-toggle">🌙</button>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px;">
+        <div style="width: 32px;"></div> <!-- Placeholder with width equal to the button -->
+        <div style="text-align: center; flex-grow: 1;">
+            <a href="https://www.nationnerds.com" style="text-decoration: none;">
+                <h1 style="margin-top: 0; line-height: 1;"><span class="gradient-text">NationNerds</span> 🌍</h1>
+            </a>
+            <p class="tagline" style="margin-top: 5px;">194 Countries. Can you name them all?</p>
+        </div>
+        <button id="dark-mode-toggle" style="margin-top: -10px;">🌙</button>
     </div>
-    <a href="https://www.nationnerds.com" style="text-decoration: none;">
-        <h1><span class="gradient-text">NationNerds</span> 🌍</h1>
-        <p class="tagline">194 Countries. Can you name them all?</p>
-    </a>    
-    
+
     <!-- Add this new section for the instructions -->
     <div class="game-section" id="instructions" style="display: none;">
         <h3>❓How to Play</h3>
