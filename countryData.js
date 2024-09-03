@@ -379,7 +379,7 @@ const countryHints = {
     'Mexico': 'A North American country famous for its rich cultural heritage, including Aztec and Maya ruins, vibrant festivals like Día de los Muertos, and its diverse cuisine with tacos, enchiladas, and mole.',
     'Micronesia': 'A group of islands in the Pacific Ocean, known for its stunning marine biodiversity and the ancient city of Nan Madol, built on artificial islands.',
     'Moldova': 'A small landlocked country in Eastern Europe known for its wine, particularly from the Mileștii Mici winery, which has the largest wine collection in the world.',
-    'Monaco': 'The second smallest country in the world, known for its luxury casinos, the Monaco Grand Prix, and being a playground for the rich and famous on the French Riviera.',
+    'Monaco': 'The second smallest country in the world, known for its luxury casinos, a famous Grand Prix, and being a playground for the rich and famous on the French Riviera.',
     'Mongolia': 'A vast landlocked country in Central Asia, known for its nomadic culture, the Gobi Desert, and being the birthplace of Genghis Khan.',
     'Montenegro': 'A Balkan country known for its stunning Adriatic coastline, medieval towns like Kotor, and rugged mountainous terrain.',
     'Morocco': 'A North African country known for its colorful markets, ancient medinas like in Marrakech, and the Atlas Mountains.',
