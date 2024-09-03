@@ -137,11 +137,10 @@ function checkCountry(guess) {
 
 function normalizeCountryName(name) {
     return name.toLowerCase()
-        .replace(/^(north|south|east|west)\s/, '')
-        .replace(/^s\.?\s/, 'south ')
-        .replace(/^n\.?\s/, 'north ')
-        .replace(/^e\.?\s/, 'east ')
-        .replace(/^w\.?\s/, 'west ')
+        .replace(/^(s\.?|south)\s(korea|sudan)/, 'south $2')
+        .replace(/^(n\.?|north)\s(korea|macedonia)/, 'north $2')
+        .replace(/^(e\.?|east)\s(timor)/, 'east $2')
+        .replace(/^(w\.?|west)\s(sahara)/, 'west $2')
         .trim();
 }
 
