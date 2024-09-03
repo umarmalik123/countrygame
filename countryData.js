@@ -524,6 +524,7 @@ const countryNot = {
     'French Polynesia': 'French Polynesia is not considered a country because it is an overseas collectivity of France and lacks sovereignty as an independent country.',
     'Newfoundland and Labrador': 'Newfoundland and Labrador is not considered a country because it is a province of Canada and is part of a sovereign country, not an independent state.',
     'Antarctica': 'Antarctica is not considered a country because it has no permanent population, government, or sovereignty. It is governed by an international treaty (the Antarctic Treaty System), which prohibits military activity, mineral mining, and establishes Antarctica as a scientific preserve. No country owns Antarctica, and it is managed cooperatively by the countries that are parties to the treaty.',
+    'Kosovo': 'Kosovo is not considered a country because it is a partially recognized state that declared independence from Serbia but is not widely recognized internationally as a sovereign state.',
 }
 
 // Export the variables
