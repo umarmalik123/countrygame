@@ -72,7 +72,7 @@ function showHint(letter) {
         }
         const currentCountry = unguessedCountries[hintIndices[letter]];
         const hint = countryHints[currentCountry];
-        displayMessage(`💡 Hint for a country starting with "${letter}": ${hint}`);
+        displayMessage(`💡 Hint for a country starting with "${letter}":<br> ${hint}`);
         
         // Move to the next hint index, or back to 0 if we've reached the end
         hintIndices[letter] = (hintIndices[letter] + 1) % unguessedCountries.length;
