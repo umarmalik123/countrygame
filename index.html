@@ -73,6 +73,8 @@
             text-align: center;
             margin-left: auto;
             margin-right: auto;
+            border-radius: 10px;
+            overflow: hidden;
         }
         #guessed-countries {
             max-width: 800px;
@@ -353,6 +355,32 @@
             font-size: 20px;
             cursor: pointer;
             padding: 5px;
+        }
+
+        :root {
+            --game-section-bg: rgba(255, 255, 255, 0.5);
+            --flash-color: rgba(255, 255, 255, 0.8);
+            --border-radius: 10px;
+        }
+
+        body.dark-mode {
+            --game-section-bg: rgba(255, 255, 255, 0.1);
+            --flash-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .game-section {
+            background-color: var(--game-section-bg);
+            border-radius: var(--border-radius);
+        }
+
+        @keyframes flash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: var(--flash-color); }
+        }
+
+        .flash-message {
+            animation: flash 1.5s;
+            border-radius: var(--border-radius);
         }
     </style>
 </head>

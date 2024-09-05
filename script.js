@@ -72,10 +72,25 @@ function showHint(letter) {
         }
         const currentCountry = unguessedCountries[hintIndices[letter]];
         const hint = countryHints[currentCountry];
-        displayMessage(`💡 Hint for a country starting with "${letter}":<br> ${hint}`);
+        displayMessage(`<strong>💡 Hint for a country starting with "${letter}":</strong><br> ${hint}`);
         
         // Move to the next hint index, or back to 0 if we've reached the end
         hintIndices[letter] = (hintIndices[letter] + 1) % unguessedCountries.length;
+
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+        // Flash the message
+        setTimeout(() => {
+            const messagesElement = document.getElementById('messages');
+            messagesElement.classList.add('flash-message');
+            setTimeout(() => {
+                messagesElement.classList.remove('flash-message');
+            }, 1500); // Remove class after animation completes
+        }, 500); // Wait for scroll to complete before flashing
     } else {
         displayMessage(`🎉 Awesome! You've guessed all countries starting with "${letter}".`);
     }
