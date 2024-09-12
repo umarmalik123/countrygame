@@ -292,7 +292,7 @@ function updatePlayerName() {
 // Modify the startNewGame function
 async function startNewGame() {
     // Show a confirmation dialog
-    if (confirm("Are you sure you want to start a new game? Your current progress will be lost!")) {
+    if (confirm("Are you sure you want to start over? Your current progress will be reset to zero!")) {
         updatePlayerName();
         if (playerName) {
             try {
